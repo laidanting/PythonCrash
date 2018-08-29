@@ -1,5 +1,6 @@
 #encoding=utf8
 import urllib2
+import urllib
 import BeautifulSoup
 
 class GetIp(object):
@@ -9,17 +10,26 @@ class GetIp(object):
         header = {'User-Agent': User_Agent}
 
         #IP代理地址，抓取页面中的IP和端口
-        url = 'http://www.xicidaili.com/nn/1'
+        url = 'http://www.xicidaili.com/nn/2'
         req = urllib2.Request(url, headers=header)
         res = urllib2.urlopen(req).read()
 
         soup = BeautifulSoup.BeautifulSoup(res)
         ips = soup.findAll('tr')
-        f = open("src/proxy", "w")
-
+        #f = open("src/proxy", "w")
+        #proxys = []
         for x in range(1, len(ips)):
+            print "1231312312"
             ip = ips[x]
             tds = ip.findAll("td")
-            ip_temp = tds[1].contents[0] + "\t" + tds[2].contents[0] + "\n"
-            # print tds[2].contents[0]+"\t"+tds[3].contents[0]
-            f.write(ip_temp)
+            #ip_temp = tds[1].contents[0] + "\t" + tds[2].contents[0] + "\n"
+            proxy_host = "http://" + tds[1].contents[0] + ":" + tds[2].contents[0]
+            proxy_temp = {"http": proxy_host}
+            #proxys.append(proxy_temp)
+            url = "http://ip.chinaz.com/getip.aspx"
+            try:
+                res = urllib.urlopen(url, proxies=proxy_temp).read()
+                print res
+            except Exception:
+                continue
+            #f.write(ip_temp)

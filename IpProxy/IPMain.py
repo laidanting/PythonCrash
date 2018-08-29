@@ -1,6 +1,8 @@
 import GetIpProxy
-import ValidateProxy
+#import ValidateProxy
 
 if __name__ == '__main__':
     GetIpProxy.GetIp().get()
-    ValidateProxy.Validate().validate()
+    # -*- coding: utf-8 -*-
+
+    #ValidateProxy.Validate().validate()
