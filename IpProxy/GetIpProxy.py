@@ -16,20 +16,19 @@ class GetIp(object):
 
         soup = BeautifulSoup.BeautifulSoup(res)
         ips = soup.findAll('tr')
-        #f = open("src/proxy", "w")
-        #proxys = []
+        f = open("src/proxy", "w")
+        proxys = []
         for x in range(1, len(ips)):
-            print "1231312312"
             ip = ips[x]
             tds = ip.findAll("td")
-            #ip_temp = tds[1].contents[0] + "\t" + tds[2].contents[0] + "\n"
-            proxy_host = "http://" + tds[1].contents[0] + ":" + tds[2].contents[0]
-            proxy_temp = {"http": proxy_host}
-            #proxys.append(proxy_temp)
-            url = "http://ip.chinaz.com/getip.aspx"
-            try:
-                res = urllib.urlopen(url, proxies=proxy_temp).read()
-                print res
-            except Exception:
-                continue
-            #f.write(ip_temp)
+            ip_temp = tds[1].contents[0] + "\t" + tds[2].contents[0] + "\n"
+            #proxy_host = "http://" + tds[1].contents[0] + ":" + tds[2].contents[0]
+            #proxy_temp = {"http": proxy_host}
+            #proxys.append(ip_temp)
+            #url = "http://ip.chinaz.com/getip.aspx"
+            #try:
+                #res = urllib.urlopen(url, proxies=ip_temp).read()
+                #print res
+            #except Exception:
+                #continue
+            f.write(ip_temp)
