@@ -9,6 +9,7 @@ class Validate(object):
         socket.setdefaulttimeout(3)
         f = open("src/proxy")
         lines = f.readlines()
+        print len(lines)
         proxys = []
         for i in range(0, len(lines)):
             ip = lines[i].strip("\n").split("\t")
@@ -19,6 +20,6 @@ class Validate(object):
         for proxy in proxys:
             try:
                 res = urllib.urlopen(url, proxies=proxy).read()
-                print res
+                print proxy
             except Exception, e:
                 continue

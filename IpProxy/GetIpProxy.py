@@ -10,7 +10,7 @@ class GetIp(object):
         header = {'User-Agent': User_Agent}
 
         #IP代理地址，抓取页面中的IP和端口
-        url = 'http://www.xicidaili.com/nn/2'
+        url = 'http://www.xicidaili.com/nt/'
         req = urllib2.Request(url, headers=header)
         res = urllib2.urlopen(req).read()
 
