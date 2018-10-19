@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['ExcelToXml.py'],
-             pathex=['D:\\ldt\\python-test\\code'],
+a = Analysis(['mainActivity.py'],
+             pathex=['D:\\ldt\\PythonCrash\\code'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -26,4 +26,4 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
-          console=True )
+          console=False )

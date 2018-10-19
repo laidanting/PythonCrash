@@ -19,7 +19,20 @@ def open_excel(file):
         data = xlrd.open_workbook(file)  # xlrd 操作excel的外部库
         return data
     except Exception, e:
-        print str(e)
+         print str(e)
+
+
+def add_Element(doc, testSuit, suitText1, k):
+    locals()['testSuit' + str(k)] = doc.createElement('testsuite')
+    locals()['testSuit' + str(k)].setAttribute('name', suitText1[k])
+    if k == 1:
+        testSuit.appendChild(locals()['testSuit' + str(k)])
+        testSuit = locals()['testSuit' + str(k)]
+    else:
+        j = k - 1
+        locals()['testSuit' + str(j)].appendChild(locals()['testSuit' + str(k)])
+        testSuit = locals()['testSuit' + str(k)]
+    return testSuit
 
 
 def excel_table_byindex(file, by_index=0):
@@ -30,7 +43,6 @@ def excel_table_byindex(file, by_index=0):
     nRows = table.nrows
 
     doc = xml.dom.minidom.Document()  # 打开xml对象
-    # xmain = doc.createElement('testcases')
     xmain = doc.createElement('testsuite')
     doc.appendChild(xmain)
 
@@ -48,20 +60,12 @@ def excel_table_byindex(file, by_index=0):
                     testSuit = xmain
                 continue
             if nrow == 1:
-                locals()['testSuit' + str(k)] = doc.createElement('testsuite')
-                locals()['testSuit' + str(k)].setAttribute('name', suitText1[k])
-                if k == 1:
-                    testSuit.appendChild(locals()['testSuit' + str(k)])
-                    testSuit = locals()['testSuit' + str(k)]
-                else:
-                    j = k - 1
-                    locals()['testSuit' + str(j)].appendChild(locals()['testSuit' + str(k)])
-                    testSuit = locals()['testSuit' + str(k)]
+                testSuit = add_Element(doc, testSuit, suitText1, k)
             elif nrow != 1:
                 onePreTest = table.cell(nrow - 1, 0).value
                 onePreTest = onePreTest.split('/')
                 preSuitName = ""
-                if onePreTest[k] != suitText1[k]:
+                if len(onePreTest) == len(suitText1) and onePreTest[k] != suitText1[k]:
                     locals()['testSuit' + str(k)] = doc.createElement('testsuite')
                     locals()['testSuit' + str(k)].setAttribute('name', suitText1[k])
                     if k == 1:
@@ -71,6 +75,8 @@ def excel_table_byindex(file, by_index=0):
                         j = k - 1
                         locals()['testSuit' + str(j)].appendChild(locals()['testSuit' + str(k)])
                         testSuit = locals()['testSuit' + str(k)]
+                elif len(onePreTest) < len(suitText1):
+                    testSuit = add_Element(doc, testSuit, suitText1, k)
 
         suitText2 = table.cell(nrow, 1).value  # 第二列的值(子模块)
         if nrow != 1:
@@ -155,14 +161,13 @@ def excel_table_byindex(file, by_index=0):
     f.write(doc.toprettyxml())
     f.close()
 
-
-#excel_table_byindex(u'D:/ldt/test.xlsx', by_index = 0)  #excel文件路径
-if __name__ == "__main__":
-
-    value1 = raw_input(u'please input excelFile(D:/ldt/testcase.xlsx):')
-    try:
-        value2 = int(raw_input(u'please input sheet index(first sheet is 0):'))
-    except BaseException:
-        value2 = int(0)
-    print value2
-    excel_table_byindex(value1, by_index=value2)
+#excel文件路径
+#excel_table_byindex(u'D:/test.xlsx', by_index = 0)
+# if __name__ == "__main__":
+#      value1 = raw_input(u'please input excelFile(D:/ldt/testcase.xlsx):')
+#      try:
+#          value2 = int(raw_input(u'please input sheet index(first sheet is 0):'))
+#      except BaseException:
+#          value2 = int(0)
+#      print value2
+#      excel_table_byindex(value1, by_index=value2)
